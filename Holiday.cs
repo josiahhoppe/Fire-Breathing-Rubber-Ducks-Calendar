@@ -1,5 +1,4 @@
-/* A program that allows users to add holidays to a calendar.
-* 
+/* A program that allows users to add holidays to a calendar. 
 * Author: Bemnet Aboye
 * Date: 11/14/2024
 */
