@@ -1,12 +1,11 @@
 ﻿/* Author: Josiah Hoppe
- * Date: Nov 15, 2024
+ * Date: Nov 22, 2024
  * Purpose: This defines the Appointment Calendar class and lets the user store Appointments in a calendar.
  */
 
 using AppointmentNameSpace;
-using System.Collections.Generic;
 
-/**
+/*
    Write a program to design an appointment calendar.
    An appointment includes the date, starting time,
    ending time, and a description; for example,
@@ -20,7 +19,7 @@ using System.Collections.Generic;
 */
 public class AppointmentCalendar
 {
-    private List<Appointment> appointments;
+    readonly List<Appointment> appointments;
 
     /**
        Constructs an AppointmentCalendar object.
@@ -45,7 +44,7 @@ public class AppointmentCalendar
     */
     public void Cancel(Appointment a)
     {
-        for (int i = 0; i < appointments.Count(); i++)
+        for (int i = 0; i < appointments.Count; i++)
         {
             Appointment appt = appointments[i];
             if (appt.Equals(a))
@@ -59,7 +58,7 @@ public class AppointmentCalendar
     /**
        Gets all appointment for a certain date.
        @param d the date
-       @return the appointments for that day
+       @return the appointments for that Day
     */
     public List<Appointment> getAppointmentsForDay(AppointmentDate d)
     {
@@ -91,4 +90,5 @@ public class AppointmentCalendar
 
         return output;
     }
+
 }
