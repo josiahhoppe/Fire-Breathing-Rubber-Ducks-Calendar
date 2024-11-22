@@ -1,9 +1,8 @@
-﻿/* A program that allows users to add holidays to a calendar.
- * 
- * Author: Bemnet Aboye
- * Date: 11/14/2024
- */
-
+/* A program that allows users to add holidays to a calendar.
+* 
+* Author: Bemnet Aboye
+* Date: 11/14/2024
+*/
 
 using System;
 using System.Collections.Generic;
@@ -21,7 +20,7 @@ public class Holiday
     }
 }
 
-public class Calendar
+public class Calendar : IDisposable
 {
     public List<Holiday> Holidays { get; set; }
 
@@ -32,7 +31,10 @@ public class Calendar
 
     public void AddHoliday(Holiday holiday)
     {
-        Holidays.Add(holiday);
+        if (holiday != null)
+        {
+            Holidays.Add(holiday);
+        }
     }
 
     public void LoadHolidaysFromFile(string filePath)
@@ -47,9 +49,15 @@ public class Calendar
                     string[] parts = line.Split(',');
                     if (parts.Length == 2)
                     {
-                        DateTime date = DateTime.Parse(parts[0]);
-                        string name = parts[1];
-                        AddHoliday(new Holiday(date, name));
+                        if (DateTime.TryParse(parts[0], out DateTime date))
+                        {
+                            string name = parts[1];
+                            AddHoliday(new Holiday(date, name));
+                        }
+                        else
+                        {
+                            Console.WriteLine($"Invalid date format: {parts[0]}");
+                        }
                     }
                 }
             }
@@ -59,22 +67,28 @@ public class Calendar
             Console.WriteLine($"The file could not be read: {e.Message}");
         }
     }
+
+    public void Dispose()
+    {
+        // Dispose of any resources if necessary
+    }
 }
 
 public class Program
 {
     public static void Main()
     {
-        Calendar calendar = new Calendar();
-
-        // Load holidays from a file
-        string filePath = "holidays.txt"; // Make sure this file exists and contains holiday data
-        calendar.LoadHolidaysFromFile(filePath);
-
-        // Display the holidays
-        foreach (Holiday holiday in calendar.Holidays)
+        using (Calendar calendar = new Calendar())
         {
-            Console.WriteLine($"{holiday.Name} is on {holiday.Date.ToShortDateString()}");
+            // Load holidays from a file
+            string filePath = "holidays.txt"; // Make sure this file exists and contains holiday data
+            calendar.LoadHolidaysFromFile(filePath);
+
+            // Display the holidays
+            foreach (Holiday holiday in calendar.Holidays)
+            {
+                Console.WriteLine($"{holiday.Name} is on {holiday.Date.ToShortDateString()}");
+            }
         }
     }
 }
