@@ -38,7 +38,7 @@ public class AppointmentTime
        }
        else
        {
-          string[] time = t.Split(":");
+          string[] time = t.Split(':');
           try
           {
              hours = Convert.ToInt32(time[0]);
