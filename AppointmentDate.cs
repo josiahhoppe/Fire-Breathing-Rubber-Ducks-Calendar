@@ -1,7 +1,5 @@
-﻿/* Author: Josiah Hoppe
- * Date: Nov 6, 2024
- * Purpose: Store the day of an appointment, and make sure it is a valid date.
- */
+﻿
+using System;
 
 /**
    Write a program to design an appointment calendar.
@@ -20,7 +18,6 @@ public class AppointmentDate
     private int year;
     private int month;
     private int day;
-   
     private static readonly int[] DAYS = { 31, 29, 31, 30, 31, 30, 31, 30, 31, 31, 30, 31 };
     /**
      * Representation of a bad date.
@@ -31,10 +28,10 @@ public class AppointmentDate
        Constructs an AppointmentDate object.
        @param d the date
     */
-    public AppointmentDate(String d)
+    public AppointmentDate(string d)
     {
 
-        string[] dateArray = d.Split("/");
+        string[] dateArray = d.Split('/');
  
         try
         {
@@ -47,7 +44,7 @@ public class AppointmentDate
             if (day > DAYS[month - 1]) { throw (new Exception()); }
             if (month == 2 && !IsLeapYear(year) && day > 28) { throw (new Exception()); }
         }
-        catch (Exception e)
+        catch (Exception)
         {
             year = -1;
             month = -1;
@@ -56,12 +53,19 @@ public class AppointmentDate
 
     }
 
+    public AppointmentDate(DateTime date)
+    {
+        year = date.Year;
+        month = date.Month;
+        day = date.Day;
+    }
+
     /**
        Determines if dates are equal.
        @param the other date
        @return true if the dates are equal, false otherwise
     */
-    public override bool Equals(Object other)
+    public override bool Equals(object other)
     {
         if (other == null)
             return false;
@@ -70,7 +74,10 @@ public class AppointmentDate
         AppointmentDate b = (AppointmentDate)other;
         return year == b.year && month == b.month && day == b.day;
     }
-
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(year, month, day);
+    }
     /**
        Prints a string representation of the date.
        @return the date
@@ -79,7 +86,16 @@ public class AppointmentDate
     {
         return year + "/" + month + "/" + day;
     }
-
+    public DateTime ToDateTime()
+    {
+        if (!IsValid())
+            throw new InvalidOperationException("Cannot convert an invalid date to DateTime.");
+        return new DateTime(year, month, day);
+    }
+    public bool IsValid()
+    {
+        return year > 0 && month > 0 && day > 0;
+    }
     // From "The Art and Science of Java" by Roberts.
     private static bool IsLeapYear(int year)
     {

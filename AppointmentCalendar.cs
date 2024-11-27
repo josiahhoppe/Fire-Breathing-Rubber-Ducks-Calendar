@@ -1,9 +1,12 @@
 ﻿/* Author: Josiah Hoppe
- * Date: Nov 6, 2024
+ * Date: Nov 15, 2024
  * Purpose: This defines the Appointment Calendar class and lets the user store Appointments in a calendar.
  */
 
 using AppointmentNameSpace;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 /**
    Write a program to design an appointment calendar.
@@ -72,4 +75,23 @@ public class AppointmentCalendar
         }
         return r;
     }
+
+    public List<Appointment> searchCalendarFor(string searchPhrase)
+    {
+        List<Appointment> output = new List<Appointment> ();
+        string[] keywords = searchPhrase.Split(' ' );
+        foreach (Appointment appointment in appointments)
+        {
+            foreach (string word in keywords)
+            {
+                if ((appointment.description).Contains(word))
+                {
+                    output.Add(appointment);
+                }
+            }
+        }
+
+        return output;
+    }
+    
 }
